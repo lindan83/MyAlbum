@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">我的相册</string>
+    <string name="app_pager_title_photo">照片</string>
+    <string name="app_pager_title_album">相册</string>
+    <string name="app_external_storage_device_unmounted">设备的外部存储设备未挂载</string>
+    <string name="app_permission_request_external_storage_access">我的相册需要系统授权外部存储设备的访问权限，请允许</string>
+    <string name="app_permission_request_external_storage_access_deny_msg">我的相册需要系统授权外部存储设备的访问权限，请在设置-应用管理-我的相册中开启</string>
+    <string name="app_error_arguments">参数错误:%s</string>
+    <string name="app_bucket_photo_count">%d张照片</string>
+</resources>
