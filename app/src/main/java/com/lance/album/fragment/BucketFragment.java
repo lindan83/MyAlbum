@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.lance.album.PhotoListActivity;
 import com.lance.album.R;
 import com.lance.album.bean.BucketBean;
 import com.lance.album.service.PhotoAlbumService;
@@ -59,7 +60,6 @@ public class BucketFragment extends BaseFragment implements EasyPermissions.Perm
 
     @Override
     public void initData() {
-        bucketList = new ArrayList<>();
         createAdapter(bucketList);
         rvAlbum.setAdapter(adapter);
         if (EasyPermissions.hasPermissions(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -149,7 +149,8 @@ public class BucketFragment extends BaseFragment implements EasyPermissions.Perm
         adapter.setOnItemClickListener(new AbstractRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                // TODO: 17-4-7
+                BucketBean item = bucketList.get(position);
+                PhotoListActivity.showActivity(getActivity(), item.bucketId, item.bucketName);
             }
 
             @Override

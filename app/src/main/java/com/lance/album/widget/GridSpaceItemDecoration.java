@@ -3,7 +3,6 @@ package com.lance.album.widget;
 import android.graphics.Rect;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -39,12 +38,12 @@ public class GridSpaceItemDecoration extends RecyclerView.ItemDecoration {
             if (position >= spanCount) {
                 outRect.top = 0;
             }
-            Log.d("GridSpaceItemDecoration", "getItemOffsets: position = " + position);
-            Log.d("GridSpaceItemDecoration", "getItemOffsets: left = " + outRect.left);
-            Log.d("GridSpaceItemDecoration", "getItemOffsets: top = " + outRect.top);
-            Log.d("GridSpaceItemDecoration", "getItemOffsets: right = " + outRect.right);
-            Log.d("GridSpaceItemDecoration", "getItemOffsets: bottom = " + outRect.bottom);
-            Log.d("GridSpaceItemDecoration", "getItemOffsets: -----------------------------------");
+//            Log.d("GridSpaceItemDecoration", "getItemOffsets: position = " + position);
+//            Log.d("GridSpaceItemDecoration", "getItemOffsets: left = " + outRect.left);
+//            Log.d("GridSpaceItemDecoration", "getItemOffsets: top = " + outRect.top);
+//            Log.d("GridSpaceItemDecoration", "getItemOffsets: right = " + outRect.right);
+//            Log.d("GridSpaceItemDecoration", "getItemOffsets: bottom = " + outRect.bottom);
+//            Log.d("GridSpaceItemDecoration", "getItemOffsets: -----------------------------------");
         }
     }
 }

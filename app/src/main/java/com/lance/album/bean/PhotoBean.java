@@ -13,6 +13,7 @@ public class PhotoBean implements Parcelable {
     public String id;
     public String name;
     public Date date;
+    public long size;
     public AddressBean address;
     public String path;
     public String bucketId;
@@ -30,6 +31,7 @@ public class PhotoBean implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.name);
         dest.writeLong(this.date != null ? this.date.getTime() : -1);
+        dest.writeLong(this.size);
         dest.writeParcelable(this.address, flags);
         dest.writeString(this.path);
         dest.writeString(bucketId);
@@ -45,6 +47,7 @@ public class PhotoBean implements Parcelable {
         this.name = in.readString();
         long tmpDate = in.readLong();
         this.date = tmpDate == -1 ? null : new Date(tmpDate);
+        this.size = in.readLong();
         this.address = in.readParcelable(AddressBean.class.getClassLoader());
         this.path = in.readString();
         this.bucketId = in.readString();

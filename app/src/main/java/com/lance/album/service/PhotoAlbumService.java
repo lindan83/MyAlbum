@@ -54,6 +54,7 @@ public class PhotoAlbumService {
                 MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.DATA,
+                MediaStore.Images.Media.SIZE,
                 MediaStore.Images.Media.LONGITUDE,
                 MediaStore.Images.Media.LATITUDE,
                 MediaStore.Images.Media.BUCKET_ID,
@@ -80,6 +81,7 @@ public class PhotoAlbumService {
                         photoBean.address = addressBean;
                         photoBean.bucketId = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID));
                         photoBean.date = new Date(cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED)) * 1000);
+                        photoBean.size = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.SIZE));
                         photoBean.label = new SectionLabelBean(getDateLabel(photoBean.date));
                         List<PhotoBean> photoList = photoMap.get(photoBean.label);
                         if (photoList == null) {
@@ -289,5 +291,58 @@ public class PhotoAlbumService {
             bucketList.add(entry.getValue());
         }
         return bucketList;
+    }
+
+    /**
+     * 获取指定相册中的照片
+     *
+     * @param context  Context
+     * @param bucketId 相册ID
+     * @return 照片列表
+     */
+    public synchronized List<PhotoBean> getPhotoList(Context context, String bucketId) {
+        String[] projections = {
+                MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.Media.DATA,
+                MediaStore.Images.Media.SIZE,
+                MediaStore.Images.Media.LONGITUDE,
+                MediaStore.Images.Media.LATITUDE,
+                MediaStore.Images.Media.BUCKET_ID,
+                MediaStore.Images.Media.DATE_ADDED
+        };
+        List<PhotoBean> photoList = new ArrayList<>();
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                projections,
+                MediaStore.Images.Media.BUCKET_ID + "=?",
+                new String[]{bucketId},
+                null);
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        PhotoBean photoBean = new PhotoBean();
+                        photoBean.id = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media._ID));
+                        photoBean.name = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
+                        photoBean.path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                        AddressBean addressBean = new AddressBean();
+                        addressBean.longitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE));
+                        addressBean.latitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE));
+                        photoBean.address = addressBean;
+                        photoBean.bucketId = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID));
+                        photoBean.date = new Date(cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED)) * 1000);
+                        photoBean.size = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.SIZE));
+                        photoBean.label = new SectionLabelBean(getDateLabel(photoBean.date));
+                        photoList.add(photoBean);
+                    } while (cursor.moveToNext());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                cursor.close();
+            }
+        }
+        return photoList;
     }
 }

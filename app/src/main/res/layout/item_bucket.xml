@@ -5,6 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:paddingBottom="8dp"
     android:paddingLeft="12dp"
     android:paddingRight="12dp"
@@ -68,6 +71,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/iv_bucket"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_bucket"
-        app:srcCompat="@mipmap/icon_xiangqian"/>
+        app:srcCompat="@mipmap/ic_xiangqian"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -7,4 +7,8 @@
     <string name="app_permission_request_external_storage_access_deny_msg">我的相册需要系统授权外部存储设备的访问权限，请在设置-应用管理-我的相册中开启</string>
     <string name="app_error_arguments">参数错误:%s</string>
     <string name="app_bucket_photo_count">%d张照片</string>
+
+    <string name="app_photo_sort_by_datetime">时间</string>
+    <string name="app_photo_sort_by_size">大小</string>
+    <string name="app_photo_sort_by_name">名称</string>
 </resources>
