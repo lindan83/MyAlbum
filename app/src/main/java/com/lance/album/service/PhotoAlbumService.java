@@ -345,4 +345,19 @@ public class PhotoAlbumService {
         }
         return photoList;
     }
+
+    /**
+     * 删除指定照片
+     *
+     * @param context Context
+     * @param id      照片ID
+     * @return true表示成功 false表示失败
+     */
+    public synchronized boolean deletePhoto(Context context, String id) {
+        int count = context.getContentResolver().delete(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                MediaStore.Images.Media._ID + "=?",
+                new String[]{id});
+        return count == 1;
+    }
 }

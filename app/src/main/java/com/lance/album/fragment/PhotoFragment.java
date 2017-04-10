@@ -1,6 +1,8 @@
 package com.lance.album.fragment;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,6 +41,8 @@ import pub.devrel.easypermissions.EasyPermissions;
  */
 public class PhotoFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks {
     private static final int RC_EXTERNAL_STORAGE = 100;//请求码，外部存储器
+    private static final int RC_PHOTO_VIEW_ACTIVITY = 101;//请求码，显示大图
+
     private RecyclerView rvPhoto;
     private CommonRecyclerViewAdapter<List<PhotoBean>> adapter;
     private List<List<PhotoBean>> photoList;
@@ -112,7 +116,7 @@ public class PhotoFragment extends BaseFragment implements EasyPermissions.Permi
         protected List<List<PhotoBean>> doInBackground(Void... params) {
             PhotoFragment fragment = ref.get();
             if (fragment != null) {
-                Map<SectionLabelBean, List<PhotoBean>> photoMap = PhotoAlbumService.getInstance().getPhotoMap(fragment.getContext());
+                Map<SectionLabelBean, List<PhotoBean>> photoMap = PhotoAlbumService.getInstance().getPhotoMap(fragment.getActivity());
                 return PhotoAlbumService.getInstance().getPhotoList(photoMap);
             }
             return null;
@@ -170,7 +174,7 @@ public class PhotoFragment extends BaseFragment implements EasyPermissions.Permi
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                         PhotoBean item = photoGridAdapter.getData().get(position);
                         int index = PhotoAlbumService.getInstance().getPhotoPosition(photoViewList, item.id);
-                        PhotoViewActivity.showActivity(getActivity(), photoViewList, index);
+                        PhotoViewActivity.showActivityForResultFromFragment(PhotoFragment.this, new ArrayList<>(photoViewList), index, RC_PHOTO_VIEW_ACTIVITY);
                     }
 
                     @Override
@@ -183,6 +187,21 @@ public class PhotoFragment extends BaseFragment implements EasyPermissions.Permi
 
             }
         };
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_PHOTO_VIEW_ACTIVITY) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    ArrayList<String> deletedIds = data.getStringArrayListExtra(PhotoViewActivity.RESULT_ID);
+                    if (deletedIds != null && !deletedIds.isEmpty()) {
+                        new PhotoAsyncTask(PhotoFragment.this).execute();
+                    }
+                }
+            }
+        }
     }
 
     @Override

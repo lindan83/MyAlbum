@@ -35,6 +35,7 @@ import java.util.List;
  * 相册中的照片列表Grid
  */
 public class PhotoListActivity extends BaseActivity {
+    public static final int RC_PHOTO_VIEW_ACTIVITY = 100;
     private static final byte TYPE_SORT_DATETIME = 11;
     private static final byte TYPE_SORT_SIZE = 12;
     private static final byte TYPE_SORT_NAME = 3;
@@ -112,7 +113,7 @@ public class PhotoListActivity extends BaseActivity {
         adapter.setOnItemClickListener(new AbstractRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                PhotoViewActivity.showActivity(PhotoListActivity.this, photoList, position);
+                PhotoViewActivity.showActivityForResult(PhotoListActivity.this, photoList, position, RC_PHOTO_VIEW_ACTIVITY);
             }
 
             @Override

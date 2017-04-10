@@ -11,4 +11,11 @@
     <string name="app_photo_sort_by_datetime">时间</string>
     <string name="app_photo_sort_by_size">大小</string>
     <string name="app_photo_sort_by_name">名称</string>
+
+    <string name="app_photo_delete">删除</string>
+    <string name="app_photo_edit">编辑</string>
+    <string name="app_photo_menu">菜单</string>
+
+    <string name="app_photo_dialog_confirm_context">是否删除所选文件</string>
+    <string name="app_photo_delete_fail">删除失败</string>
 </resources>

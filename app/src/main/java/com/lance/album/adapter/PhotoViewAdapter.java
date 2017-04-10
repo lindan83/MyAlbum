@@ -31,6 +31,7 @@ import java.util.List;
  */
 public class PhotoViewAdapter extends PagerAdapter {
     private List<PhotoBean> data = new ArrayList<>();
+    private int childCount = 0;
     private LayoutInflater inflater;
     private Context context;
     private PhotoViewAttacher.OnViewTapListener mOnViewTapListener;
@@ -119,5 +120,20 @@ public class PhotoViewAdapter extends PagerAdapter {
     @Override
     public Parcelable saveState() {
         return null;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        childCount = getCount();
+        super.notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        if (childCount > 0) {
+            childCount--;
+            return POSITION_NONE;
+        }
+        return super.getItemPosition(object);
     }
 }

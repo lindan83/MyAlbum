@@ -1,6 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.lance.common.widget.PhotoViewPager
-    android:id="@+id/vp_photo_view"
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <!--照片信息层-->
+    <LinearLayout
+        android:id="@+id/ll_photo_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:alpha="180"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:scrollbars="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_ev"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="EV: 0"/>
+
+            <TextView
+                android:id="@+id/tv_s"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="S: 1/100 s"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_iso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="ISO: 80"/>
+
+            <TextView
+                android:id="@+id/tv_f"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="F: 2"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_photo_focal_length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="焦距: 28mm"/>
+
+        <TextView
+            android:id="@+id/tv_photo_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="IMG_20170410"/>
+
+        <TextView
+            android:id="@+id/tv_photo_datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="4160*3120 7.84MB"/>
+
+        <TextView
+            android:id="@+id/tv_photo_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="型号: H60-L11"/>
+
+        <TextView
+            android:id="@+id/tv_photo_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="地点: 中国广东省汕头市龙湖区"/>
+
+        <TextView
+            android:id="@+id/tv_photo_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="路径: /storage/emulated/0/DCIM/Camera/IMG20170410.jpg"/>
+    </LinearLayout>
+
+    <com.lance.common.widget.PhotoViewPager
+        android:id="@+id/vp_photo_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageView
+        android:id="@+id/iv_info"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:src="@mipmap/ic_info"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_photo_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:drawableBottom="@mipmap/ic_photo_menu"
+            android:drawablePadding="4dp"
+            android:text="@string/app_photo_delete"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/tv_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:drawableBottom="@mipmap/ic_photo_menu"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:text="@string/app_photo_edit"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:drawableBottom="@mipmap/ic_photo_menu"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:text="@string/app_photo_menu"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"/>
+    </LinearLayout>
+</FrameLayout>

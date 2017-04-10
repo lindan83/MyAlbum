@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
-
     private ViewPager vpMain;
     private TabLayout tabMain;
     private AlbumPagerAdapter pagerAdapter;
