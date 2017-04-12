@@ -19,20 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".TestNestedRecyclerViewActivity">
-        </activity>
-        <activity android:name=".TestGroupRecyclerViewActivity">
-        </activity>
-        <activity android:name=".TestActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN"/> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity android:name=".PhotoViewActivity">
+        <activity
+            android:name=".PhotoViewActivity"
+            android:hardwareAccelerated="false">
         </activity>
         <activity android:name=".PhotoListActivity">
         </activity>

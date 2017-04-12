@@ -68,9 +68,22 @@
         android:layout_marginEnd="0dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/app_name"
+        android:src="@mipmap/ic_xiangqian"
         app:layout_constraintBottom_toBottomOf="@+id/iv_bucket"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/iv_bucket"
-        app:srcCompat="@mipmap/ic_xiangqian"/>
+        app:layout_constraintTop_toTopOf="@+id/iv_bucket"/>
+
+    <CheckBox
+        android:id="@+id/cb_check_button"
+        style="@style/CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_bucket"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_bucket"/>
 
 </android.support.constraint.ConstraintLayout>

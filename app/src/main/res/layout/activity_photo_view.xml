@@ -6,128 +6,6 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <!--照片信息层-->
-    <LinearLayout
-        android:id="@+id/ll_photo_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
-        android:alpha="180"
-        android:orientation="vertical"
-        android:paddingBottom="8dp"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:scrollbars="vertical"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_ev"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                tools:text="EV: 0"/>
-
-            <TextView
-                android:id="@+id/tv_s"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                tools:text="S: 1/100 s"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_iso"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                tools:text="ISO: 80"/>
-
-            <TextView
-                android:id="@+id/tv_f"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                tools:text="F: 2"/>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_photo_focal_length"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            tools:text="焦距: 28mm"/>
-
-        <TextView
-            android:id="@+id/tv_photo_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            tools:text="IMG_20170410"/>
-
-        <TextView
-            android:id="@+id/tv_photo_datetime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            tools:text="4160*3120 7.84MB"/>
-
-        <TextView
-            android:id="@+id/tv_photo_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            tools:text="型号: H60-L11"/>
-
-        <TextView
-            android:id="@+id/tv_photo_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            tools:text="地点: 中国广东省汕头市龙湖区"/>
-
-        <TextView
-            android:id="@+id/tv_photo_path"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            tools:text="路径: /storage/emulated/0/DCIM/Camera/IMG20170410.jpg"/>
-    </LinearLayout>
-
     <com.lance.common.widget.PhotoViewPager
         android:id="@+id/vp_photo_view"
         android:layout_width="match_parent"
@@ -199,5 +77,142 @@
             android:text="@string/app_photo_menu"
             android:textColor="@android:color/white"
             android:textSize="12sp"/>
+    </LinearLayout>
+
+    <!--照片信息层-->
+    <LinearLayout
+        android:id="@+id/ll_photo_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:alpha="180"
+        android:background="@color/half_transparent"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:scrollbars="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_photo_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="IMG_20170410"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
+
+            <!--曝光补偿-->
+            <TextView
+                android:id="@+id/tv_ev"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="EV: 0"/>
+
+            <!--快门速度-->
+            <TextView
+                android:id="@+id/tv_s"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="S: 1/100 s"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!--感光度-->
+            <TextView
+                android:id="@+id/tv_iso"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="ISO: 80"/>
+
+            <!--光圈-->
+            <TextView
+                android:id="@+id/tv_f"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                tools:text="F: 2"/>
+        </LinearLayout>
+
+        <!--焦距-->
+        <TextView
+            android:id="@+id/tv_photo_focal_length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="焦距: 28mm"/>
+
+        <TextView
+            android:id="@+id/tv_photo_datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="2017年4月11日 20:08"/>
+
+        <TextView
+            android:id="@+id/tv_photo_file_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="4160 * 3120 7.84MB"/>
+
+        <TextView
+            android:id="@+id/tv_photo_camera_model"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="型号: H60-L11"/>
+
+        <TextView
+            android:id="@+id/tv_photo_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="地点: 中国广东省汕头市龙湖区"/>
+
+        <TextView
+            android:id="@+id/tv_photo_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:text="路径: /storage/emulated/0/DCIM/Camera/IMG20170410.jpg"/>
     </LinearLayout>
 </FrameLayout>

@@ -18,4 +18,29 @@
 
     <string name="app_photo_dialog_confirm_context">是否删除所选文件</string>
     <string name="app_photo_delete_fail">删除失败</string>
+
+    <string name="app_photo_info_iso">ISO: %s</string>
+    <string name="app_photo_info_s">S: %s</string>
+    <string name="app_photo_info_ev">EV: %s</string>
+    <string name="app_photo_info_f">F: %s</string>
+    <string name="app_photo_info_focal_length">焦距: %s</string>
+    <string name="app_photo_info_camera_model">型号: %s</string>
+    <string name="app_photo_info_address">地点: %s</string>
+    <string name="app_photo_info_path">路径: %s</string>
+    <string name="app_photo_info_size">文件大小: %s</string>
+
+    <string name="app_bottom_menu_bucket_create">新建相册</string>
+    <string name="app_bottom_menu_menu">菜单</string>
+    <string name="app_bucket_name_null">相册名称不能为空</string>
+    <string name="app_bucket_create_success">创建相册成功</string>
+    <string name="app_bucket_create_fail">创建相册失败</string>
+    <string name="app_bucket_empty">没有照片</string>
+
+    <string name="app_operation_bar_title">已选择(%d)</string>
+
+    <string name="app_operation_menu_item_share">分享</string>
+    <string name="app_operation_menu_item_move_into">移入</string>
+    <string name="app_operation_menu_item_delete">删除</string>
+    <string name="app_operation_menu_item_select_all">全选</string>
+    <string name="app_operation_menu_item_menu">菜单</string>
 </resources>

@@ -2,6 +2,7 @@ package com.lance.album.service;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
@@ -11,6 +12,7 @@ import com.lance.album.bean.PhotoBean;
 import com.lance.album.bean.SectionLabelBean;
 import com.lance.common.util.DateUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,19 +26,19 @@ import java.util.Set;
  * Created by lindan on 17-4-5.
  * 相册照片查询业务类
  */
-public class PhotoAlbumService {
-    private static PhotoAlbumService instance;
+public class PhotoBucketService {
+    private static PhotoBucketService instance;
 
     /**
      * 获取唯一实例
      *
      * @return PhotoAlbumService对象
      */
-    public static PhotoAlbumService getInstance() {
+    public static PhotoBucketService getInstance() {
         if (instance == null) {
-            synchronized (PhotoAlbumService.class) {
+            synchronized (PhotoBucketService.class) {
                 if (instance == null) {
-                    instance = new PhotoAlbumService();
+                    instance = new PhotoBucketService();
                 }
             }
         }
@@ -300,7 +302,7 @@ public class PhotoAlbumService {
      * @param bucketId 相册ID
      * @return 照片列表
      */
-    public synchronized List<PhotoBean> getPhotoList(Context context, String bucketId) {
+    public synchronized List<PhotoBean> getPhotoList(Context context, String bucketId, String bucketName) {
         String[] projections = {
                 MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DISPLAY_NAME,
@@ -315,8 +317,8 @@ public class PhotoAlbumService {
         Cursor cursor = context.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 projections,
-                MediaStore.Images.Media.BUCKET_ID + "=?",
-                new String[]{bucketId},
+                MediaStore.Images.Media.BUCKET_ID + "=? OR " + MediaStore.Images.Media.BUCKET_DISPLAY_NAME + "=?",
+                new String[]{bucketId, bucketName},
                 null);
         if (cursor != null) {
             try {
@@ -359,5 +361,62 @@ public class PhotoAlbumService {
                 MediaStore.Images.Media._ID + "=?",
                 new String[]{id});
         return count == 1;
+    }
+
+    /**
+     * 查询相册是否已存在
+     *
+     * @param context    Context
+     * @param bucketName 相册名称
+     * @return exist == true  not exists == false
+     */
+    public synchronized boolean bucketExists(Context context, String bucketName) {
+        boolean exists = false;
+        //新建查询列
+        String[] projections = new String[]{
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME
+        };
+        //新建查询
+        Cursor cursor = null;
+        try {
+            cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    projections, null, null, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        String name = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
+                        if (TextUtils.equals(bucketName, name)) {
+                            exists = true;
+                            break;
+                        }
+                    } while (cursor.moveToNext());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return exists;
+    }
+
+    /**
+     * 创建新相册
+     *
+     * @param bucketName 相册名称
+     * @return boolean
+     */
+    public synchronized boolean createNewBucket(Context context, String bucketName) {
+        if (bucketExists(context, bucketName)) {
+            return false;
+        }
+        File pictureDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File bucketDir = new File(pictureDir, bucketName);
+        if (bucketDir.exists()) {
+            return true;
+        }
+        return bucketDir.mkdirs();
     }
 }

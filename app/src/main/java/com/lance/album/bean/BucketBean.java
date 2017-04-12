@@ -84,4 +84,24 @@ public class BucketBean implements Parcelable {
             return new BucketBean[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BucketBean that = (BucketBean) o;
+
+        if (bucketId != null ? !bucketId.equals(that.bucketId) : that.bucketId != null)
+            return false;
+        return bucketName != null ? bucketName.equals(that.bucketName) : that.bucketName == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = bucketId != null ? bucketId.hashCode() : 0;
+        result = 31 * result + (bucketName != null ? bucketName.hashCode() : 0);
+        return result;
+    }
 }

@@ -1,23 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_main"
+    <FrameLayout
+        android:id="@+id/fl_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        app:tabIndicatorColor="@color/color_106EAC"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/color_106EAC"
-        app:tabTextColor="@android:color/black"/>
+        android:layout_height="?android:attr/actionBarSize">
 
-    <android.support.v4.view.ViewPager
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:tabIndicatorColor="@color/color_106EAC"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/color_106EAC"
+            app:tabTextColor="@android:color/black"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_operation_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/app_name"
+                android:src="@mipmap/ic_close"/>
+
+            <TextView
+                android:id="@+id/tv_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/app_operation_bar_title"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"/>
+        </RelativeLayout>
+    </FrameLayout>
+
+    <com.lance.album.widget.MyViewPager
         android:id="@+id/vp_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/view_separator"
+        android:layout_below="@+id/fl_top_bar"/>
 
-</LinearLayout>
+    <View
+        android:id="@+id/view_separator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@+id/fl_bottom_menu_container"
+        android:background="@android:color/darker_gray"/>
+
+    <FrameLayout
+        android:id="@+id/fl_bottom_menu_container"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true">
+
+        <!--普通模式的菜单-->
+        <LinearLayout
+            android:id="@+id/ll_bottom_menu"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="6dp">
+
+            <TextView
+                android:id="@+id/tv_bucket_create"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@mipmap/ic_bucket_new"
+                android:gravity="center"
+                android:text="@string/app_bottom_menu_bucket_create"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_menu"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@mipmap/ic_menu"
+                android:gravity="center"
+                android:text="@string/app_bottom_menu_menu"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_edit_menu"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_share"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@mipmap/ic_share"
+                android:gravity="center"
+                android:text="@string/app_operation_menu_item_share"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_move_into"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@mipmap/ic_move"
+                android:gravity="center"
+                android:text="@string/app_operation_menu_item_move_into"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_delete"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@mipmap/ic_delete"
+                android:gravity="center"
+                android:text="@string/app_operation_menu_item_delete"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_select_all"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@mipmap/ic_select_all"
+                android:gravity="center"
+                android:text="@string/app_operation_menu_item_select_all"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_edit_menu"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@mipmap/ic_menu"
+                android:gravity="center"
+                android:text="@string/app_operation_menu_item_menu"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </FrameLayout>
+
+</RelativeLayout>

@@ -12,12 +12,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.lance.album.MainActivity;
 import com.lance.album.PhotoViewActivity;
 import com.lance.album.R;
 import com.lance.album.adapter.PhotoGridAdapter;
 import com.lance.album.bean.PhotoBean;
 import com.lance.album.bean.SectionLabelBean;
-import com.lance.album.service.PhotoAlbumService;
+import com.lance.album.service.PhotoBucketService;
 import com.lance.album.util.ViewUtil;
 import com.lance.album.widget.GridSpaceItemDecoration;
 import com.lance.album.widget.SectionDecoration;
@@ -30,8 +31,10 @@ import com.lance.common.widget.template.BaseFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -43,10 +46,17 @@ public class PhotoFragment extends BaseFragment implements EasyPermissions.Permi
     private static final int RC_EXTERNAL_STORAGE = 100;//请求码，外部存储器
     private static final int RC_PHOTO_VIEW_ACTIVITY = 101;//请求码，显示大图
 
+    private int spanCount;
+    private int margins;
+
     private RecyclerView rvPhoto;
     private CommonRecyclerViewAdapter<List<PhotoBean>> adapter;
+    private List<PhotoGridAdapter> adapterList = new ArrayList<>();
     private List<List<PhotoBean>> photoList;
     private List<PhotoBean> photoViewList;
+
+    private boolean isEditMode;
+    private Set<PhotoBean> selectedPhotos = new HashSet<>();
 
     @Override
     public int getLayoutId() {
@@ -67,6 +77,8 @@ public class PhotoFragment extends BaseFragment implements EasyPermissions.Permi
 
     @Override
     public void initData() {
+        spanCount = 4;
+        margins = DensityUtil.dp2px(getActivity(), 4) * (spanCount + 1);
         photoList = new ArrayList<>();
         createAdapter(photoList);
         rvPhoto.setAdapter(adapter);
@@ -116,8 +128,8 @@ public class PhotoFragment extends BaseFragment implements EasyPermissions.Permi
         protected List<List<PhotoBean>> doInBackground(Void... params) {
             PhotoFragment fragment = ref.get();
             if (fragment != null) {
-                Map<SectionLabelBean, List<PhotoBean>> photoMap = PhotoAlbumService.getInstance().getPhotoMap(fragment.getActivity());
-                return PhotoAlbumService.getInstance().getPhotoList(photoMap);
+                Map<SectionLabelBean, List<PhotoBean>> photoMap = PhotoBucketService.getInstance().getPhotoMap(fragment.getActivity());
+                return PhotoBucketService.getInstance().getPhotoList(photoMap);
             }
             return null;
         }
@@ -129,8 +141,8 @@ public class PhotoFragment extends BaseFragment implements EasyPermissions.Permi
                 if (fragment != null) {
                     fragment.photoList.clear();
                     fragment.photoList.addAll(photoList);
-                    fragment.photoViewList = PhotoAlbumService.getInstance().mergePhotoList(fragment.photoList);
-                    final List<SectionLabelBean> labelList = PhotoAlbumService.getInstance().getPhotoLabelList(fragment.photoList);
+                    fragment.photoViewList = PhotoBucketService.getInstance().mergePhotoList(fragment.photoList);
+                    final List<SectionLabelBean> labelList = PhotoBucketService.getInstance().getPhotoLabelList(fragment.photoList);
                     if (fragment.adapter == null) {
                         fragment.rvPhoto.addItemDecoration(new SectionDecoration(labelList, DensityUtil.dp2px(fragment.getContext(), 28)));
                         fragment.createAdapter(fragment.photoList);
@@ -148,9 +160,6 @@ public class PhotoFragment extends BaseFragment implements EasyPermissions.Permi
             data = new ArrayList<>();
         }
         adapter = new CommonRecyclerViewAdapter<List<PhotoBean>>(getContext(), R.layout.item_photo, data) {
-            int spanCount;
-            int margins;
-
             @Override
             protected void convert(CommonRecyclerViewHolder holder, List<PhotoBean> item, int position) {
                 RecyclerView rvPhotoItem = holder.getView(R.id.rv_photo_item);
@@ -161,30 +170,38 @@ public class PhotoFragment extends BaseFragment implements EasyPermissions.Permi
             }
 
             @Override
-            public void onViewHolderCreated(CommonRecyclerViewHolder holder, final View itemView) {
+            public void onViewHolderCreated(final CommonRecyclerViewHolder holder, final View itemView) {
                 RecyclerView rvPhotoItem = holder.getView(R.id.rv_photo_item);
-                rvPhotoItem.addItemDecoration(new GridSpaceItemDecoration(DensityUtil.dp2px(holder.itemView.getContext(), 4)));
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), 4);
+                rvPhotoItem.addItemDecoration(new GridSpaceItemDecoration(margins / (spanCount + 1)));
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(holder.itemView.getContext(), spanCount);
                 rvPhotoItem.setLayoutManager(gridLayoutManager);
-                spanCount = gridLayoutManager.getSpanCount();
-                margins = DensityUtil.dp2px(itemView.getContext(), 4) * (spanCount + 1);
-                final PhotoGridAdapter photoGridAdapter = new PhotoGridAdapter(itemView.getContext(), spanCount, margins);
+                final PhotoGridAdapter photoGridAdapter = new PhotoGridAdapter(PhotoFragment.this, spanCount, margins);
+                adapterList.add(photoGridAdapter);
                 photoGridAdapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                         PhotoBean item = photoGridAdapter.getData().get(position);
-                        int index = PhotoAlbumService.getInstance().getPhotoPosition(photoViewList, item.id);
+                        int index = PhotoBucketService.getInstance().getPhotoPosition(photoViewList, item.id);
                         PhotoViewActivity.showActivityForResultFromFragment(PhotoFragment.this, new ArrayList<>(photoViewList), index, RC_PHOTO_VIEW_ACTIVITY);
                     }
 
                     @Override
                     public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                        // TODO: 17-4-7
-                        return false;
+                        //进入编辑模式
+                        isEditMode = true;
+                        PhotoBean selectedItem = photoGridAdapter.getData().get(position);
+                        photoGridAdapter.addPhotoToSelected(selectedItem);
+                        MainActivity mainActivity = (MainActivity) getActivity();
+                        if (mainActivity != null) {
+                            mainActivity.showOperationBar(true, selectedPhotos.size());
+                        }
+                        for (PhotoGridAdapter adapter : adapterList) {
+                            adapter.notifyDataSetChanged();
+                        }
+                        return true;
                     }
                 });
                 rvPhotoItem.setAdapter(photoGridAdapter);
-
             }
         };
     }
@@ -208,6 +225,51 @@ public class PhotoFragment extends BaseFragment implements EasyPermissions.Permi
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    /**
+     * 刷新相册列表
+     */
+    public void refreshBucketList() {
+        new PhotoAsyncTask(this).execute();
+    }
+
+    /**
+     * 当前是否编辑模式
+     *
+     * @return
+     */
+    public boolean isEditMode() {
+        return isEditMode;
+    }
+
+    /**
+     * 设置模式
+     *
+     * @param isEditMode true为编辑模式
+     */
+    public void setEditMode(boolean isEditMode) {
+        this.isEditMode = isEditMode;
+        selectedPhotos.clear();
+        for (PhotoGridAdapter adapter : adapterList) {
+            adapter.clearSelectedPhotos();
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * 通知照片选中项数量改变
+     */
+    public synchronized void notifyPhotoSelectedCountChange() {
+        selectedPhotos.clear();
+        for (PhotoGridAdapter adapter : adapterList) {
+            selectedPhotos.addAll(adapter.getSelectedPhotos());
+        }
+        int selectedCount = selectedPhotos.size();
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            activity.showOperationBar(true, selectedCount);
+        }
     }
 
     public static PhotoFragment newFragment(String title) {

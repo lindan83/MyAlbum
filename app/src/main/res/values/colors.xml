@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="color_106EAC">#106eac</color>
     <color name="color_929292">#929292</color>
+
+    <color name="half_transparent">#66000000</color>
 </resources>

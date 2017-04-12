@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.lance.album.bean.PhotoBean;
-import com.lance.album.service.PhotoAlbumService;
+import com.lance.album.service.PhotoBucketService;
 import com.lance.album.widget.GridSpaceItemDecoration;
 import com.lance.common.recyclerview.adapter.AbstractRecyclerViewAdapter;
 import com.lance.common.recyclerview.adapter.CommonRecyclerViewAdapter;
@@ -43,9 +43,11 @@ public class PhotoListActivity extends BaseActivity {
     private RelativeLayout rlSortByDatetime, rlSortBySize, rlSortByName;
     private ImageView ivSortByDateTime, ivSortBySize, ivSortByName;
     private TextView tvSortByDateTime, tvSortBySize, tvSortByName;
+    private RecyclerView rvPhotoGrid;
     private CommonRecyclerViewAdapter<PhotoBean> adapter;
+    private View flEmptyView;
     private List<PhotoBean> photoList = new ArrayList<>();
-    private String bucketId;
+    private String bucketId, bucketName;
     private int itemMargin, spanCount = 4;
 
     int sortBy = PhotoComparator.SORT_BY_DATETIME;
@@ -60,12 +62,13 @@ public class PhotoListActivity extends BaseActivity {
     public void initViews() {
         itemMargin = DensityUtil.dp2px(this, 4);
         bucketId = getIntent().getStringExtra("bucket_id");
-        String bucketName = getIntent().getStringExtra("bucket_name");
+        bucketName = getIntent().getStringExtra("bucket_name");
         if (TextUtils.isEmpty(bucketId) || TextUtils.isEmpty(bucketName)) {
             ToastUtil.showShort(this, getString(R.string.app_error_arguments, "bucketId or bucketName is null or empty!"));
             finish();
             return;
         }
+        flEmptyView = getView(R.id.fl_empty_view);
         TextView tvBucketName = getView(R.id.tv_bucket_name);
         rlSortByDatetime = getView(R.id.rl_sort_by_datetime);
         rlSortBySize = getView(R.id.rl_sort_by_size);
@@ -76,7 +79,7 @@ public class PhotoListActivity extends BaseActivity {
         tvSortByDateTime = getView(R.id.tv_sort_by_datetime);
         tvSortBySize = getView(R.id.tv_sort_by_size);
         tvSortByName = getView(R.id.tv_sort_by_name);
-        RecyclerView rvPhotoGrid = getView(R.id.rv_photo_grid);
+        rvPhotoGrid = getView(R.id.rv_photo_grid);
         rvPhotoGrid.setLayoutManager(new GridLayoutManager(this, spanCount));
         rvPhotoGrid.setItemAnimator(new DefaultItemAnimator());
         rvPhotoGrid.addItemDecoration(new GridSpaceItemDecoration(itemMargin));
@@ -121,11 +124,48 @@ public class PhotoListActivity extends BaseActivity {
                 return false;
             }
         });
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                if (adapter.getData() == null || adapter.getData().isEmpty()) {
+                    flEmptyView.setVisibility(View.VISIBLE);
+                    rvPhotoGrid.setVisibility(View.GONE);
+                } else {
+                    flEmptyView.setVisibility(View.GONE);
+                    rvPhotoGrid.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                super.onItemRangeChanged(positionStart, itemCount);
+            }
+
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
+                super.onItemRangeChanged(positionStart, itemCount, payload);
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+            }
+
+            @Override
+            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+                super.onItemRangeMoved(fromPosition, toPosition, itemCount);
+            }
+        });
     }
 
     @Override
     public void initData() {
-        List<PhotoBean> photoBeanList = PhotoAlbumService.getInstance().getPhotoList(this, bucketId);
+        List<PhotoBean> photoBeanList = PhotoBucketService.getInstance().getPhotoList(this, bucketId, bucketName);
         if (photoBeanList != null && !photoBeanList.isEmpty()) {
             photoList.addAll(photoBeanList);
             adapter.notifyDataSetChanged();
